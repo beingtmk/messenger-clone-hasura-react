@@ -19,7 +19,7 @@ export const withAuth = (Component: React.ComponentType) => {
 
     // Validating against server
     const fetchUser = useQuery<Me.Query, Me.Variables>(queries.me, { suspend: true, context: { headers: {'x-hasura-role': 'mine'}} })
-    const myResult = fetchUser.data.users ? fetchUser.data.users[0] : {};
+    const myResult = fetchUser.data.users ? fetchUser.data.users[fetchUser.data.users.length-1] : {};
 
     useSubscriptions(myResult)
 
