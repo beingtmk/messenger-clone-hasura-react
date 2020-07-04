@@ -14,7 +14,7 @@ import { useQuery, useMutation } from 'react-apollo-hooks'
 import styled from 'styled-components'
 import * as fragments from '../../graphql/fragments'
 import * as queries from '../../graphql/queries'
-import { useMe } from '../../services/auth.service';
+import { useMe } from '../../services/auth';
 import { ChatList, DeleteChat, ChatsListCacheQuery } from '../../graphql/types'
 
 const Style = styled.div`
@@ -61,7 +61,7 @@ const Style = styled.div`
 `
 
 const query = gql`
-  query ChatList($chatId: Int!, $userId: Int!) {
+  query ChatList($chatId: Int!, $userId: String!) {
     chat_users(where:{chat_id: {_eq: $chatId}, user_id: {_neq: $userId}}) {
       chat {
         ...chat
@@ -76,7 +76,7 @@ const query = gql`
 `
 
 const queryCache = gql`
-  query ChatsListCacheQuery($userId: Int!) {
+  query ChatsListCacheQuery($userId: String!) {
     chat(order_by:[{messages_aggregate:{max:{created_at:desc}}}]) {
       ...chat
       users(where:{user_id:{_neq:$userId}}) {

@@ -10,7 +10,7 @@ import { time as uniqid } from 'uniqid'
 import * as fragments from '../../graphql/fragments'
 import * as queries from '../../graphql/queries'
 import { CompleteGroupButtonMutation, Chat, Chats } from '../../graphql/types'
-import { useMe } from '../../services/auth.service'
+import { useMe } from '../../services/auth'
 
 const Style = styled.div`
   position: fixed;
@@ -32,7 +32,7 @@ const mutation = gql`
     $userIds: [chat_users_insert_input!]!
     $groupName: String!
     $groupPicture: String
-    $ownerId: Int
+    $ownerId: String
   ) {
     insert_chat(objects: [{name: $groupName, picture: $groupPicture, owner_id: $ownerId, users:{data: $userIds}}]) {
       returning {
@@ -54,7 +54,7 @@ export default ({ history, users, groupName, groupPicture }: CompleteGroupButton
   const me = useMe()
 
   // business logic required.
-  const userIds = users.map(user => { return {user_id: user.id} });
+  const userIds = users.map(user => { return {user_id: user.auth0_id} });
   userIds.push({user_id: me.id});
   const addGroup = useMutation<CompleteGroupButtonMutation.Mutation, CompleteGroupButtonMutation.Variables>(mutation, {
     variables: {

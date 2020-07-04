@@ -3,7 +3,7 @@ module.exports = {
         {
             "http://hasura-chat.mithileshkohale.com/v1/graphql": {
                 "headers": {
-                    "x-hasura-admin-secret": ""
+                    "x-hasura-admin-secret": "ultimate"
                 }
             }
         }

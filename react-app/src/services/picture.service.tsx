@@ -1,4 +1,4 @@
-import { getAuthHeader } from './auth.service'
+import { getAuthHeader } from './auth'
 
 export const pickPicture = () => {
   return new Promise((resolve, reject) => {

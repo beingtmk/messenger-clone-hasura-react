@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { time as uniqid } from 'uniqid'
 import * as fragments from '../../graphql/fragments'
 import { MessageBoxMutation, MessagesListQueryLocal } from '../../graphql/types'
-import { useMe } from '../../services/auth.service'
+import { useMe } from '../../services/auth'
 
 const Style = styled.div`
   display: flex;
@@ -46,7 +46,7 @@ const Style = styled.div`
 `
 
 const mutation = gql`
-  mutation MessageBoxMutation($chatId: Int!, $content: String!, $sender_id: Int!) {
+  mutation MessageBoxMutation($chatId: Int!, $content: String!, $sender_id: String!) {
     insert_message(objects: [{chat_id: $chatId, content: $content, sender_id: $sender_id}]) {
       affected_rows
       returning {

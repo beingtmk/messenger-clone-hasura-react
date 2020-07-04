@@ -9,7 +9,7 @@ import { time as uniqid } from 'uniqid'
 import * as fragments from '../../graphql/fragments'
 import * as queries from '../../graphql/queries'
 import { NewChatScreenMutation, Chats, Chat } from '../../graphql/types'
-import { useMe } from '../../services/auth.service'
+import { useMe } from '../../services/auth'
 import Navbar from '../Navbar'
 import UsersList from '../UsersList'
 import NewChatNavbar from './NewChatNavbar'
@@ -27,7 +27,7 @@ const Style = styled.div`
 `
 
 const mutation = gql`
-  mutation NewChatScreenMutation($userId: Int!,$currentUserId: Int!) {
+  mutation NewChatScreenMutation($userId: String!,$currentUserId: String!) {
     insert_chat(objects: [{
       owner_id: null,
       users: {
@@ -53,7 +53,7 @@ export default ({ history }: RouteComponentProps) => {
   const addChat = useMutation<NewChatScreenMutation.Mutation, NewChatScreenMutation.Variables>(
     mutation,
     {
-      update: (client, { data: { insert_chat } }) => {
+      update: (client, { data: { insert_chat }, }) => {
         try {
           client.writeFragment<Chat.Fragment>({
             id: defaultDataIdFromObject(insert_chat.returning[0]),
@@ -88,13 +88,13 @@ export default ({ history }: RouteComponentProps) => {
   );
 
   const onUserPick = user => {
-    const selectedUserId = user.id;
+    const selectedUserId = user.auth0_id;
     if(user.isExisting) {
       history.push(`/chats/${user.chat_id}`)
     } else {
       addChat({
         variables: {
-          userId: user.id,
+          userId: user.auth0_id,
           currentUserId: me.id
         },
       })

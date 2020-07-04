@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField'
 import { History } from 'history'
 import * as React from 'react'
 import { useState } from 'react'
-import { signUp } from '../../services/auth.service'
+// import { signUp } from '../../services/auth'
 
 interface SignUpFormProps {
   history: History
@@ -41,17 +41,17 @@ export default ({ history }: SignUpFormProps) => {
   }
 
   const handleSignUp = () => {
-    signUp({ username, password, name })
-      .then((response) => {
-        if(response.ok) {
-          history.push('/sign-in')
-        } else {
-          alert('Could not signup now. Try again later');
-        }
-      })
-      .catch(error => {
-        setError(error.message || error)
-      })
+    // signUp({ username, password, name })
+    //   .then((response) => {
+    //     if(response.ok) {
+    //       history.push('/sign-in')
+    //     } else {
+    //       alert('Could not signup now. Try again later');
+    //     }
+    //   })
+    //   .catch(error => {
+    //     setError(error.message || error)
+    //   })
   }
 
   const handleSignIn = () => {

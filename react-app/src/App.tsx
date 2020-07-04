@@ -4,11 +4,13 @@ import ChatRoomScreen from './components/ChatRoomScreen'
 import NewChatScreen from './components/NewChatScreen'
 import AnimatedSwitch from './components/AnimatedSwitch'
 import AuthScreen from './components/AuthScreen'
+import Callback from './components/AuthScreen/callback'
+
 import ChatsListScreen from './components/ChatsListScreen'
 import GroupDetailsScreen from './components/GroupDetailsScreen'
 import SettingsScreen from './components/SettingsScreen'
 import NewGroupScreen from './components/NewGroupScreen'
-import { withAuth } from './services/auth.service'
+import { withAuth } from './services/auth'
 
 const RedirectToChats = () => (
   <Redirect to="/chats" />
@@ -17,7 +19,8 @@ const RedirectToChats = () => (
 export default () => (
   <BrowserRouter>
     <AnimatedSwitch>
-      <Route exact path="/sign-(in|up)" component={AuthScreen} />
+      <Route exact path="/sign-in" component={AuthScreen} />
+      <Route exact path="/callback" component={Callback} />
       <Route exact path="/chats" component={withAuth(ChatsListScreen)} />
       <Route exact path="/settings" component={withAuth(SettingsScreen)} />
       <Route exact path="/chats/:chatId" component={withAuth(ChatRoomScreen)} />

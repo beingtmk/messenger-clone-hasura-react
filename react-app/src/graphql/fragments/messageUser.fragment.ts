@@ -6,6 +6,7 @@ export default gql`
     chat_id
     sender {
       id
+      auth0_id
       name
     }
     content

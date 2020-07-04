@@ -4,7 +4,8 @@ import { Route } from 'react-router-dom'
 import styled from 'styled-components'
 import AnimatedSwitch from '../AnimatedSwitch'
 import SignInForm from './SignInForm'
-import SignUpForm from './SignUpForm'
+
+// import SignUpForm from './SignUpForm'
 
 const Style = styled.div`
   background: radial-gradient(#3b5998, rgb(17, 48, 50));
@@ -111,7 +112,7 @@ export default ({ history, location }: RouteComponentProps) => (
     </div>
     <AnimatedSwitch>
       <Route exact path="/sign-in" component={SignInForm} />
-      <Route exact path="/sign-up" component={SignUpForm} />
+      {/* <Route exact path="/sign-up" component={SignUpForm} /> */}
     </AnimatedSwitch>
   </Style>
 )

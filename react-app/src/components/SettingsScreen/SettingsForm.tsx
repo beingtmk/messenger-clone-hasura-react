@@ -9,7 +9,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import * as fragments from '../../graphql/fragments'
 import { SettingsFormMutation, User } from '../../graphql/types'
-import { useMe } from '../../services/auth.service'
+import { useMe } from '../../services/auth'
 import { pickPicture, uploadProfilePicture } from '../../services/picture.service'
 import Navbar from '../Navbar'
 import SettingsNavbar from './SettingsNavbar'
@@ -52,8 +52,8 @@ const Style = styled.div`
 `
 
 const mutation = gql`
-  mutation SettingsFormMutation($name: String, $picture: String, $userId: Int) {
-    update_users(_set: {name: $name, picture: $picture}, where: {id: {_eq: $userId}}) {
+  mutation SettingsFormMutation($name: String, $picture: String, $userId: String) {
+    update_users(_set: {name: $name, picture: $picture}, where: {auth0_id: {_eq: $userId}}) {
       affected_rows
       returning {
         id

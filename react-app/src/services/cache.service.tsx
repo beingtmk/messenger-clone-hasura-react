@@ -12,7 +12,7 @@ import {
 import { useSubscription } from '../polyfills/react-apollo-hooks'
 
 const query = gql`
-  query ChatsListQueryCache($userId: Int!) {
+  query ChatsListQueryCache($userId: String!) {
     chat(order_by:[{messages_aggregate:{max:{created_at:desc}}}]) {
       ...chat
       users(where:{user_id:{_neq:$userId}}) {

@@ -9,7 +9,7 @@ import * as ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import * as fragments from '../../graphql/fragments'
 import { ChatsListQuery } from '../../graphql/types'
-import { useMe } from '../../services/auth.service';
+import { useMe } from '../../services/auth';
 
 const Style = styled.div`
   height: calc(100% - 56px);
@@ -65,7 +65,7 @@ const Style = styled.div`
 
 // user_id not equal to currently logged in user
 const query = gql`
-  query ChatsListQuery($userId: Int!) {
+  query ChatsListQuery($userId: String!) {
     chat(order_by:[{messages_aggregate:{max:{created_at:desc}}}]) {
       ...chat
       users(where:{user_id:{_neq:$userId}}) {
@@ -86,14 +86,9 @@ interface ChatsListProps {
 export default ({ history }: ChatsListProps) => {
   const me = useMe();
   const {
-    loading,
-    error,
-    data,
+    data: {chat},
   } = useQuery<ChatsListQuery.Query, ChatsListQuery.Variables>(query, { variables: {userId: me.id}, suspend: true })
 
-  console.log("id",me);
-
-  const chat = data.chat;
   const navToChat = chatId => {
     history.push(`chats/${chatId}`)
   }
@@ -118,7 +113,7 @@ export default ({ history }: ChatsListProps) => {
                 }
               />
               <div className="ChatsList-info">
-                <div className="ChatsList-name">{chat.owner_id ? chat.name : chat.users[0].user.username}</div>
+                <div className="ChatsList-name">{chat.owner_id ? chat.name : chat.users[0].user.name}</div>
                 {chat.messages && chat.messages[chat.messages.length-1] && (
                   <React.Fragment>
                     <div className="ChatsList-last-message">{chat.messages[chat.messages.length-1].content}</div>

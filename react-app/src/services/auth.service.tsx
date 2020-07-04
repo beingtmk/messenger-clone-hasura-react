@@ -2,6 +2,7 @@ import * as React from 'react'
 import { useContext } from 'react'
 import { useQuery } from 'react-apollo-hooks'
 import { Redirect } from 'react-router-dom'
+
 import store from '../apollo-client'
 import * as queries from '../graphql/queries'
 import { Me } from '../graphql/types'

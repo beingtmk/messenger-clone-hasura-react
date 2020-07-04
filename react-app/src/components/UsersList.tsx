@@ -9,7 +9,7 @@ import { useSubscription } from '../polyfills/react-apollo-hooks'
 import styled from 'styled-components'
 import * as fragments from '../graphql/fragments'
 import { ExistingChatUsers, RemainingUsers, RemainingUsersSub } from '../graphql/types'
-import { useMe } from '../services/auth.service'
+import { useMe } from '../services/auth'
 
 const Style = styled.div`
   .UsersList-users-list {
@@ -46,7 +46,7 @@ const Style = styled.div`
 `
 
 const existingUsersQuery = gql`
-  query ExistingChatUsers($userId: Int){
+  query ExistingChatUsers($userId: String){
     chat(where:{users:{user_id:{_eq:$userId}}, owner_id:{_is_null:true}}){
       id
       name
@@ -63,8 +63,8 @@ const existingUsersQuery = gql`
 `;
 
 const remainingUsersQuery = gql`
-  query RemainingUsers($existingUsersId: [Int!]) {
-    users(order_by:[{id:desc}],where:{id:{_nin:$existingUsersId}}){
+  query RemainingUsers($existingUsersId: [String!]) {
+    users(order_by:[{id:desc}],where:{auth0_id:{_nin:$existingUsersId}}){
       ...user
     }
   }
@@ -72,8 +72,8 @@ const remainingUsersQuery = gql`
 `;
 
 const remainingUsersSubscription = gql`
-  subscription RemainingUsersSub($existingUsersId: [Int!]) {
-    users(order_by:[{id:desc}],where:{id:{_nin:$existingUsersId}}){
+  subscription RemainingUsersSub($existingUsersId: [String!]) {
+    users(order_by:[{id:desc}],where:{auth0_id:{_nin:$existingUsersId}}){
       ...user
     }
   }
@@ -103,6 +103,7 @@ export default (props: UsersListProps) => {
     existingUsersQuery,
     {variables: {userId: me.id}, suspend: true}
   );
+  
   let existingChatUsers
   let existingUserIds
   if(chat) {
@@ -129,7 +130,8 @@ export default (props: UsersListProps) => {
       } catch (e) {
         console.error(e);
       }
-      if(queryUsers && users && users.length && !queryUsers.some(_user => _user.id === users[0].id)) {
+      // console.log("users", users);
+      if(queryUsers && users && users.length && !queryUsers.some(_user => _user.auth0_id === users[0].auth0_id)) {
         const newUserList = queryUsers.unshift(users[0])
         client.writeQuery<RemainingUsers.Query, RemainingUsers.Variables>({
           query: remainingUsersQuery,
@@ -140,7 +142,7 @@ export default (props: UsersListProps) => {
     }
   })
 
-  const { data: { users } } = useQuery<RemainingUsers.Query, RemainingUsers.Variables>(
+  const { data: { users }} = useQuery<RemainingUsers.Query, RemainingUsers.Variables>(
     remainingUsersQuery,
     {variables: {existingUsersId: existingUserIds}, suspend: true}
   );
@@ -158,6 +160,7 @@ export default (props: UsersListProps) => {
 
   const onListItemClick = user => {
     if (!selectable) {
+      // console.log(user);
       return onUserPick(user)
     }
     if (selectedUsers.includes(user)) {
@@ -176,12 +179,12 @@ export default (props: UsersListProps) => {
       <List className="UsersList-users-list">
         {finalUsers.map(user => {
           const isSelectedUser = selectedUsers.some((el) => { 
-            return el.id === user.id
+            return el.id === user.auth0_id
           });
           return(
           <ListItem
             className="UsersList-user-item"
-            key={user.id}
+            key={user.auth0_id}
             button
             onClick={onListItemClick.bind(null, user)}
           >

@@ -6,7 +6,7 @@ import { useQuery, useMutation } from 'react-apollo-hooks'
 import * as ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import * as fragments from '../../graphql/fragments'
-import { useMe } from '../../services/auth.service'
+import { useMe } from '../../services/auth'
 import { MessagesListQuery } from '../../graphql/types'
 
 const Style = styled.div`
@@ -125,6 +125,8 @@ export default ({ chatId }: MessagesListProps) => {
   useEffect(resetScrollTop, [selfRef.current])
   useEffect(resetScrollTop, [messages.length])
 
+  console.log(messages);
+
   return (
     <Style className={name} ref={selfRef}>
       {messages &&
@@ -132,7 +134,7 @@ export default ({ chatId }: MessagesListProps) => {
           <div
             key={message.id+message.created_at}
             className={`MessagesList-message ${
-              message.sender.id === me.id ? 'MessagesList-message-mine' : 'MessagesList-message-others'
+              message.sender.auth0_id === me.id ? 'MessagesList-message-mine' : 'MessagesList-message-others'
             }`}
           >
             {owner_id && (

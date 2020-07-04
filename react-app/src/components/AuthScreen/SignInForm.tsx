@@ -3,49 +3,44 @@ import TextField from '@material-ui/core/TextField'
 import { History } from 'history'
 import * as React from 'react'
 import { useState } from 'react'
-import { signIn } from '../../services/auth.service'
+import { signIn } from '../../services/auth'
 
 interface SignInFormProps {
   history: History
 }
 
 export default ({ history }: SignInFormProps) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  // const [username, setUsername] = useState('')
+  // const [password, setPassword] = useState('')
+  // const [error, setError] = useState('')
 
-  const onUsernameChange = ({ target }) => {
-    setError('')
-    setUsername(target.value)
-  }
+  // const onUsernameChange = ({ target }) => {
+  //   setError('')
+  //   setUsername(target.value)
+  // }
 
-  const onPasswordChange = ({ target }) => {
-    setError('')
-    setPassword(target.value)
-  }
+  // const onPasswordChange = ({ target }) => {
+  //   setError('')
+  //   setPassword(target.value)
+  // }
 
-  const maySignIn = () => {
-    return !!(username && password)
-  }
+  // const maySignIn = () => {
+  //   return !!(username && password)
+  // }
 
   const handleSignIn = () => {
-    signIn({ username, password })
-      .then(() => {
-        history.push('/chats')
-      })
-      .catch(error => {
-        setError(error.message || error)
-      })
+    signIn()
+    // history.push('/chats')
   }
 
-  const handleSignUp = () => {
-    history.push('/sign-up')
-  }
+  // const handleSignUp = () => {
+  //   history.push('/sign-up')
+  // }
 
   return (
     <div className="SignInForm Screen">
-      <form>
-        <legend>Sign in</legend>
+      {/* <form> */}
+        {/* <legend>Sign in</legend>
         <div style={{ width: '100%' }}>
           <TextField
             className="AuthScreen-text-field"
@@ -64,21 +59,21 @@ export default ({ history }: SignInFormProps) => {
             margin="normal"
             placeholder="Enter your password"
           />
-        </div>
+        </div> */}
         <Button
           type="button"
           color="secondary"
           variant="contained"
-          disabled={!maySignIn()}
+          // disabled={!maySignIn()}
           onClick={handleSignIn}
         >
           Sign in
         </Button>
-        <div className="AuthScreen-error">{error}</div>
-        <span className="AuthScreen-alternative">
+        {/* <div className="AuthScreen-error">{error}</div> */}
+        {/* <span className="AuthScreen-alternative">
           Don't have an account yet? <a onClick={handleSignUp}>Sign up!</a>
-        </span>
-      </form>
+        </span> */}
+      {/* </form> */}
     </div>
   )
 }
