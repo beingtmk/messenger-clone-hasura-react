@@ -125,7 +125,7 @@ export default ({ chatId }: MessagesListProps) => {
   useEffect(resetScrollTop, [selfRef.current])
   useEffect(resetScrollTop, [messages.length])
 
-  console.log(messages);
+  // console.log(messages);
 
   return (
     <Style className={name} ref={selfRef}>
@@ -134,7 +134,7 @@ export default ({ chatId }: MessagesListProps) => {
           <div
             key={message.id+message.created_at}
             className={`MessagesList-message ${
-              message.sender.auth0_id === me.id ? 'MessagesList-message-mine' : 'MessagesList-message-others'
+              message.sender.auth0_id === me.auth0_id ? 'MessagesList-message-mine' : 'MessagesList-message-others'
             }`}
           >
             {owner_id && (

@@ -73,7 +73,7 @@ export default ({ history }: RouteComponentProps) => {
   const updateUser = useMutation<SettingsFormMutation.Mutation, SettingsFormMutation.Variables>(
     mutation,
     {
-      variables: { name: myName, picture: myPicture, userId: me.id },
+      variables: { name: myName, picture: myPicture, userId: me.auth0_id },
       update: (client, { data: { update_users } }) => {
         me.picture = myPicture
         me.name = myPicture

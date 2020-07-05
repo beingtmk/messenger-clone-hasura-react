@@ -115,7 +115,7 @@ export default ({ chatId, history }: ChatNavbarProps) => {
   const {
     data: { chat_users },
   } = useQuery<ChatList.Query, ChatList.Variables>(query, {
-    variables: { chatId: parsedChatId, userId: me.id },
+    variables: { chatId: parsedChatId, userId: me.auth0_id },
     suspend: true,
   })
   const removeChat = useMutation<DeleteChat.Mutation, DeleteChat.Variables>(
@@ -127,7 +127,7 @@ export default ({ chatId, history }: ChatNavbarProps) => {
         try {
           chats = client.readQuery<ChatsListCacheQuery.Query, ChatsListCacheQuery.Variables>({
             query: queryCache,
-            variables: {userId: me.id}
+            variables: {userId: me.auth0_id}
           }).chat
         } catch(e) {
           console.error(e)
@@ -138,7 +138,7 @@ export default ({ chatId, history }: ChatNavbarProps) => {
           try {
             client.writeQuery<ChatsListCacheQuery.Query, ChatsListCacheQuery.Variables>({
               query: queryCache,
-              variables: {userId: me.id},
+              variables: {userId: me.auth0_id},
               data: { chat: chats },
             })
           } catch(e) {

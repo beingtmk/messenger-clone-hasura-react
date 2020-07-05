@@ -28,14 +28,14 @@ const query = gql`
 
 export const useSubscriptions = (userResult) => {
   useSubscription<ChatsListQuerySubUpdate.Subscription, ChatsListQuerySubUpdate.Variables>(
-    subscriptions.chatUpdated, { variables: {userId: userResult.id},
+    subscriptions.chatUpdated, { variables: {userId: userResult.auth0_id},
     onSubscriptionData: ({ client, subscriptionData: { chat } }) => {
       let chats
       if(chat && chat.length) {
         try {
           chats = client.readQuery<ChatsListQueryCache.Query, ChatsListQueryCache.Variables>({
             query: query,
-            variables: {userId: userResult.id}
+            variables: {userId: userResult.auth0_id}
           }).chat
         } catch(e) {
           console.error(e)
@@ -45,7 +45,7 @@ export const useSubscriptions = (userResult) => {
           try {
             client.writeQuery<ChatsListQueryCache.Query, ChatsListQueryCache.Variables>({
               query: query,
-              variables: {userId: userResult.id},
+              variables: {userId: userResult.auth0_id},
               data: { chat: chats },
             })
           } catch(e) {
@@ -65,14 +65,14 @@ export const useSubscriptions = (userResult) => {
         try {
           chats = client.readQuery<ChatsListQueryCache.Query, ChatsListQueryCache.Variables>({
             query: query,
-            variables: {userId: userResult.id}
+            variables: {userId: userResult.auth0_id}
           }).chat
           // find array index of new message's chat id in existing cache
           const chatIndex = chats.findIndex(elem => elem.id === chatId)
           const finalChats = [chats[chatIndex], ...chats.filter((item) => item.id !== chatId)]
           client.writeQuery({
             query: query,
-            variables: {userId: userResult.id},
+            variables: {userId: userResult.auth0_id},
             data: { chat: finalChats },
           })
         } catch(e) {

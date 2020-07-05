@@ -117,7 +117,7 @@ export default ({ location, match, history }: RouteComponentProps) => {
       variables: { chatId },
       suspend: true,
     })
-    ownedByMe = chat[0].owner_id === me.id
+    ownedByMe = chat[0].owner_id === me.auth0_id
     users = chat[0].users
     participants = users.map((user) => {
       return user.user
@@ -179,7 +179,7 @@ export default ({ location, match, history }: RouteComponentProps) => {
 
   // Put me first
   {
-    const index = participants.findIndex(participant => participant.id === me.id)
+    const index = participants.findIndex(participant => participant.id === me.auth0_id)
     participants.splice(index, 1)
     participants.unshift(me)
   }

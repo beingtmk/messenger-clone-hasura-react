@@ -95,7 +95,7 @@ export default ({ history }: RouteComponentProps) => {
       addChat({
         variables: {
           userId: user.auth0_id,
-          currentUserId: me.id
+          currentUserId: me.auth0_id
         },
       })
       .then(({ data: { insert_chat } }) => {

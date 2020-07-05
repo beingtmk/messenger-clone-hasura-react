@@ -97,11 +97,11 @@ export default (props: UsersListProps) => {
 
   const [selectedUsers, setSelectedUsers] = useState([])
   const me = useMe()
-  const currentUserId = me.id;
+  const currentUserId = me.auth0_id;
 
   const { data: { chat } } = useQuery<ExistingChatUsers.Query, ExistingChatUsers.Variables>(
     existingUsersQuery,
-    {variables: {userId: me.id}, suspend: true}
+    {variables: {userId: me.auth0_id}, suspend: true}
   );
   
   let existingChatUsers

@@ -87,7 +87,7 @@ export default ({ history }: ChatsListProps) => {
   const me = useMe();
   const {
     data: {chat},
-  } = useQuery<ChatsListQuery.Query, ChatsListQuery.Variables>(query, { variables: {userId: me.id}, suspend: true })
+  } = useQuery<ChatsListQuery.Query, ChatsListQuery.Variables>(query, { variables: {userId: me.auth0_id}, suspend: true })
 
   const navToChat = chatId => {
     history.push(`chats/${chatId}`)

@@ -86,7 +86,7 @@ interface MessageBoxProps {
 export default ({ chatId }: MessageBoxProps) => {
   const [message, setMessage] = useState('')
   const me = useMe()
-  const senderId = me.id;
+  const senderId = me.auth0_id;
 
   const addMessage = useMutation<MessageBoxMutation.Mutation, MessageBoxMutation.Variables>(
     mutation,

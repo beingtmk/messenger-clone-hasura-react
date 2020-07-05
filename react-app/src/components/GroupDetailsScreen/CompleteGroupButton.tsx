@@ -55,13 +55,13 @@ export default ({ history, users, groupName, groupPicture }: CompleteGroupButton
 
   // business logic required.
   const userIds = users.map(user => { return {user_id: user.auth0_id} });
-  userIds.push({user_id: me.id});
+  userIds.push({user_id: me.auth0_id});
   const addGroup = useMutation<CompleteGroupButtonMutation.Mutation, CompleteGroupButtonMutation.Variables>(mutation, {
     variables: {
       userIds: userIds,
       groupName,
       groupPicture,
-      ownerId: me.id
+      ownerId: me.auth0_id
     },
     update: (client, { data: { insert_chat } }) => {
       client.writeFragment<Chat.Fragment>({

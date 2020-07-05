@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { useContext } from 'react';
+import { useQuery } from 'react-apollo-hooks'
 
 import auth0 from "auth0-js";
 
 import { Redirect } from 'react-router-dom';
 import store from '../apollo-client'
+import * as queries from '../graphql/queries'
 import { useSubscriptions } from './cache.service'
 
 const isBrowser = typeof window !== "undefined";
@@ -72,8 +74,6 @@ const setSession = (cb = () => {}) => (err, authResult) => {
     user = authResult.idTokenPayload
     user.idToken = authResult.idToken
     localStorage.setItem('Authorization', 'Bearer '+user.idToken)
-    localStorage.setItem('userId', user.sub)
-
     cb()
   }
 }
@@ -89,11 +89,6 @@ export const handleAuthentication = (cb) => {
   }
 
   auth.parseHash(setSession(cb))
-}
-
-export const getProfile = () => {
-  const userId = localStorage.getItem('userId');
-  return {id:userId}
 }
 
 export const signOut = () => {
@@ -114,7 +109,12 @@ export const withAuth = (Component) => {
     if (!isAuthenticated()) return <Redirect to="/sign-in" />
 
     // Validating against server
-    const myResult = getProfile();
+    // const myResult = getProfile();
+    // Validating against server
+    const fetchUser = useQuery(queries.me, { suspend: true, context: { headers: {'x-hasura-role': 'mine'}} })
+    const myResult = fetchUser.data.users ? fetchUser.data.users[0] : {};
+    // console.log(fetchUser);
+
     useSubscriptions(myResult)
 
     return (
@@ -133,8 +133,6 @@ export default {
   useMe,
   withAuth,
   getAuthHeader,
-
-  getProfile,
   isAuthenticated,
   signIn,
   signOut,
