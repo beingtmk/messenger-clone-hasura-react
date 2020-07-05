@@ -1,2 +1,3 @@
-endpoint: http://localhost:8080
+# config.yaml
+endpoint: http://hasura-chat.mithileshkohale.com
 admin_secret: ultimate
